@@ -1,22 +1,45 @@
 function validateEmail(inputText) {
   var mailFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
   if (inputText.value.match(mailFormat)) {
-    console.log('You have entered an valid email address!');
+    this.setState({
+      email: {
+        text: inputText.value,
+        isValid: true,
+        message: '',
+      },
+    });
     return true;
   } else {
-    // eslint-disable-next-line no-alert
-    console.log('You have entered an invalid email address!');
+    this.setState({
+      email: {
+        text: inputText.value,
+        isValid: false,
+        message: 'You have entered an invalid email address!',
+      },
+    });
     return false;
   }
 }
 
 function checkPassword(inputText) {
-  var paswd = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
+  var paswd = /^(\s*\d{6}\s*)(,\s*\d{6}\s*)*,?\s*$/;
   if (inputText.value.match(paswd)) {
-    console.log('Correct, try another...');
-    return true;
+    this.setState({
+      password: {
+        text: inputText.value,
+        isValid: true,
+        message: '',
+      },
+    });
+    return false;
   } else {
-    console.log('Wrong...!');
+    this.setState({
+      password: {
+        text: inputText.value,
+        isValid: false,
+        message: 'You have entered an invalid password!',
+      },
+    });
     return false;
   }
 }
@@ -76,19 +99,45 @@ function stringLength(inputtxt, minlength, maxlength) {
 
 function isRequired(inputText) {
   if (inputText.value.length === 0) {
+    this.setState({
+      isRequired: {
+        text: inputText.value,
+        isValid: false,
+        message: 'message',
+      },
+    });
+    return false;
+  } else {
+    this.setState({
+      isRequired: {
+        text: inputText.value,
+        isValid: true,
+        message: 'true message',
+      },
+    });
     return false;
   }
-  return true;
 }
 
 function phoneNumber(inputText) {
   var phoneNo = /^\d{10}$/;
   if (inputText.value.match(phoneNo)) {
-    console.log('true');
+    this.setState({
+      phone: {
+        text: inputText.value,
+        isValid: true,
+        message: '',
+      },
+    });
     return true;
   } else {
-    console.log('False');
-
+    this.setState({
+      phone: {
+        text: inputText.value,
+        isValid: false,
+        message: 'invalid phone number',
+      },
+    });
     return false;
   }
 }

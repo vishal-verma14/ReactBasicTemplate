@@ -21,21 +21,29 @@ import {
 export default class LoginScene extends Component {
   constructor() {
     super();
-
     this.state = {
       email: {
         text: '',
-        isValid: '',
+        message: '',
+        isValid: false,
       },
       password: {
         text: '',
-        isValid: '',
+        message: '',
+        isValid: false,
       },
       value: '',
     };
     this.validateEmail = validateEmail.bind(this);
     this.checkPassword = checkPassword.bind(this);
-    console.log('kry', this.state.email.text);
+  }
+
+  btnSubmit() {
+    if (this.state.email.isValid && this.state.password.isValid) {
+      this.props.navigation.navigate('UserProfile');
+    } else {
+      alert('Please fill credentials');
+    }
   }
 
   render() {
@@ -53,7 +61,8 @@ export default class LoginScene extends Component {
             textColor={colors.white}
             borderBottomColor={colors.white}
             inputType={constants.email}
-            customStyle={{marginBottom: 30}}
+            errorStyle={styles.error}
+            error={this.state.email.message}
           />
 
           <Text style={styles.text}>{constants.password}</Text>
@@ -63,12 +72,13 @@ export default class LoginScene extends Component {
             textColor={colors.white}
             borderBottomColor={colors.white}
             inputType={constants.password}
-            customStyle={{marginBottom: 30}}
+            errorStyle={styles.error}
+            error={this.state.password.message}
           />
           <TouchableOpacity
             style={styles.signInButton}
             onPress={() => {
-              this.props.navigation.navigate('UserProfile');
+              this.btnSubmit();
             }}>
             <MainButton buttonTextProp={constants.login} />
           </TouchableOpacity>
@@ -140,5 +150,10 @@ const styles = StyleSheet.create({
   },
   signUpButton: {
     marginTop: 20,
+  },
+  error: {
+    alignSelf: 'flex-end',
+    marginTop: 10,
+    color: colors.errorColor,
   },
 });

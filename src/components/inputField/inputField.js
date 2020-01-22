@@ -37,8 +37,9 @@ export default class inputField extends Component {
       textColor,
       borderBottomColor,
       inputType,
-      customStyle,
+      errorStyle,
       onChangeText,
+      error,
     } = this.props;
     const {secureInput} = this.state;
 
@@ -57,7 +58,7 @@ export default class inputField extends Component {
     return (
       <>
         {inputType === 'password' ? (
-          <View style={[customStyle, styles.wrapper]}>
+          <View style={[styles.wrapper]}>
             <TextInput
               autoCorrect={false}
               style={[
@@ -67,6 +68,7 @@ export default class inputField extends Component {
               secureTextEntry={secureInput}
               onChangeText={value => {
                 this.props.onChangeValue({
+                  inputType,
                   value,
                 });
               }}
@@ -82,7 +84,7 @@ export default class inputField extends Component {
             </TouchableOpacity>
           </View>
         ) : (
-          <View style={[customStyle, styles.wrapper]}>
+          <View style={[styles.wrapper]}>
             <TextInput
               autoCorrect={false}
               style={[
@@ -91,6 +93,7 @@ export default class inputField extends Component {
               ]}
               onChangeText={value => {
                 this.props.onChangeValue({
+                  inputType,
                   value,
                 });
               }}
@@ -99,6 +102,7 @@ export default class inputField extends Component {
             />
           </View>
         )}
+        <Text style={errorStyle}>{this.props.error}</Text>
       </>
     );
   }

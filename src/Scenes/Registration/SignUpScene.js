@@ -26,15 +26,33 @@ import {
   isRequired,
 } from '../../constants/validation';
 import {chooseImage, createFormData} from '../Common/common';
+import {constants} from '../../constants/index';
 
 export default class SignUpScene extends Component {
   constructor() {
     super();
     this.state = {
-      userName: '',
-      password: '',
+      email: {
+        text: '',
+        message: '',
+        isValid: false,
+      },
+      password: {
+        text: '',
+        message: '',
+        isValid: false,
+      },
+      phone: {
+        text: '',
+        message: '',
+        isValid: false,
+      },
+      isRequired: {
+        text: '',
+        message: '',
+        isValid: false,
+      },
       value: '',
-      email: '',
       imageResponse: '',
     };
     this.validateEmail = validateEmail.bind(this);
@@ -43,6 +61,20 @@ export default class SignUpScene extends Component {
     this.isRequired = isRequired.bind(this);
     this.chooseImage = chooseImage.bind(this);
     this.createFormData = createFormData.bind(this);
+  }
+
+  btnSubmit() {
+    if (
+      this.state.email.isValid &&
+      this.state.password.isValid &&
+      this.state.phone.isValid &&
+      this.state.isRequired.isValid &&
+      !!this.state.imageResponse
+    ) {
+      this.props.navigation.navigate('UserProfile');
+    } else {
+      alert('Please fill credentials');
+    }
   }
 
   toggleImage = (maxW, maxH) => {
@@ -103,8 +135,9 @@ export default class SignUpScene extends Component {
             onChangeValue={this.isRequired}
             textColor={colors.white}
             borderBottomColor={colors.white}
-            inputType="default"
-            customStyle={{marginBottom: 30}}
+            inputType={constants.isRequired}
+            errorStyle={styles.error}
+            error={this.state.isRequired.message}
           />
 
           <Text style={styles.text}>Phone</Text>
@@ -112,8 +145,9 @@ export default class SignUpScene extends Component {
             onChangeValue={this.phoneNumber}
             textColor={colors.white}
             borderBottomColor={colors.white}
-            inputType="phone"
-            customStyle={{marginBottom: 30}}
+            inputType={constants.phone}
+            errorStyle={styles.error}
+            error={this.state.phone.message}
           />
 
           <Text style={styles.text}>Email</Text>
@@ -121,8 +155,9 @@ export default class SignUpScene extends Component {
             onChangeValue={this.validateEmail}
             textColor={colors.white}
             borderBottomColor={colors.white}
-            inputType="email"
-            customStyle={{marginBottom: 30}}
+            inputType={constants.email}
+            errorStyle={styles.error}
+            error={this.state.email.message}
           />
 
           <Text style={styles.text}>Password</Text>
@@ -130,20 +165,16 @@ export default class SignUpScene extends Component {
             onChangeValue={this.checkPassword}
             textColor={colors.white}
             borderBottomColor={colors.white}
-            inputType="password"
-            customStyle={{marginBottom: 30}}
+            inputType={constants.password}
+            errorStyle={styles.error}
+            error={this.state.password.message}
           />
 
-          <Text style={styles.text}>Confirm Password</Text>
-          <InputField
-            onChangeValue={this.checkPassword}
-            textColor={colors.white}
-            borderBottomColor={colors.white}
-            inputType="password"
-            customStyle={{marginBottom: 30}}
-          />
-
-          <TouchableOpacity style={styles.signInButton}>
+          <TouchableOpacity
+            style={styles.signInButton}
+            onPress={() => {
+              this.btnSubmit();
+            }}>
             <MainButton buttonTextProp="Sign Up" />
           </TouchableOpacity>
 
@@ -209,5 +240,10 @@ const styles = StyleSheet.create({
   },
   signUpButton: {
     marginTop: 20,
+  },
+  error: {
+    alignSelf: 'flex-end',
+    marginTop: 10,
+    color: colors.errorColor,
   },
 });

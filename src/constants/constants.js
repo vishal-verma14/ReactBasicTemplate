@@ -6,6 +6,7 @@ const constant = {
   phone: 'Phone',
   email: 'Email',
   password: 'Password',
+  isRequired: 'isRequired',
   confirmPassword: 'Confirm Password',
   forgetPassword: 'ForgetPassword',
   userProfile: 'User Profile',
